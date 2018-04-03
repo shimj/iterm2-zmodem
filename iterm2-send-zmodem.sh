@@ -5,12 +5,8 @@
 # Remainder of script public domain
 
 osascript -e 'tell application "iTerm2" to version' > /dev/null 2>&1 && NAME=iTerm2 || NAME=iTerm
-if [[ $NAME = "iTerm" ]]; then
-	FILE=`osascript -e 'tell application "iTerm" to activate' -e 'tell application "iTerm" to set thefile to choose file with prompt "Choose a file to send"' -e "do shell script (\"echo \"&(quoted form of POSIX path of thefile as Unicode text)&\"\")"`
-else
-	FILE=`osascript -e 'tell application "iTerm2" to activate' -e 'tell application "iTerm2" to set thefile to choose file with prompt "Choose a file to send"' -e "do shell script (\"echo \"&(quoted form of POSIX path of thefile as Unicode text)&\"\")"`
-fi
-if [[ $FILE = "" ]]; then
+FILES=`osascript -e 'tell application "'$NAME'" to activate' -e 'tell application "'$NAME'" to set theList to choose file with prompt "Please select files" with multiple selections allowed' -e 'set filelist to ""' -e 'repeat with a from 1 to length of theList' -e 'set filelist to filelist & "\"" & (do shell script ("echo " & (quoted form of POSIX path of item a of theList as Unicode text) & "")) & "\" "' -e 'end repeat'`
+if [[ $FILES = "" ]]; then
 	echo Cancelled.
 	# Send ZModem cancel
 	echo -e \\x18\\x18\\x18\\x18\\x18
@@ -18,8 +14,8 @@ if [[ $FILE = "" ]]; then
 	echo
 	echo \# Cancelled transfer
 else
-	/usr/local/bin/sz "$FILE" -e -b
+	eval /usr/local/bin/sz $FILES -e -b
 	sleep 1
 	echo
-	echo \# Received $FILE
+	echo \# Received $FILES
 fi
