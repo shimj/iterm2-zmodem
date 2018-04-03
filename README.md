@@ -17,7 +17,7 @@ Setup
 
 0. Install lrzsz on OSX: `brew install lrzsz`
 1. Save the `iterm2-send-zmodem.sh` and `iterm2-recv-zmodem.sh` scripts in `/usr/local/bin/`
-2. Set up Triggers in iTerm 2 like so:
+2. Set up Triggers in iTerm 2 like so (Preferences > Profiles > Advanced > Triggers):
 
 <pre>
     Regular expression: rz waiting to receive.\*\*B0100
@@ -37,12 +37,8 @@ To send a file to a remote machine:
 2. Select the file(s) on the local machine to send
 3. Wait for the coprocess indicator to disappear
 
-The receive a file from a remote machine
+To receive a file from a remote machine
 
 1. Type `sz filename1 filename2 … filenameN` on the remote machine
 2. Select the folder to receive to on the local machine
 3. Wait for the coprocess indicator to disappear
-
-Future plans (patches welcome)
-
- - Visual progress bar indicator
